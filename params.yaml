@@ -1,9 +1,12 @@
+
 base:
   random_state: 42
   log_level: INFO
 
+
 data_load:
   dataset_csv: 'data/raw/iris.csv'
+
 
 featurize:
   features_path: 'data/processed/featured_iris.csv'
@@ -15,6 +18,7 @@ data_split:
   testset_path: 'data/processed/test_iris.csv'
 
 train:
+
   cv: 3
   estimator_name: logreg
   estimators:
@@ -31,6 +35,7 @@ train:
         gamma: ['scale']
         degree: [3, 5]
   model_path: models/model.joblib
+
 
 evaluate:
   reports_dir: reports
