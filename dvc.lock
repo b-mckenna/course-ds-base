@@ -24,13 +24,15 @@ stages:
       md5: 4224576f0267bf88902f87f0f6200967
       size: 2757
     - path: src/stages/featurize.py
-      md5: 49a7389e50fe8cd99200204cf0ef74af
-      size: 1291
+      md5: fa1ec29f6ff564a3e3d305aea118be81
+      size: 1292
     params:
       params.yaml:
         base:
           random_state: 42
           log_level: INFO
+        data_load:
+          dataset_csv: data/raw/iris.csv
         featurize:
           features_path: data/processed/featured_iris.csv
           target_column: target
@@ -69,9 +71,6 @@ stages:
   train:
     cmd: python src/stages/train.py --config=params.yaml
     deps:
-    - path: data/processed/featured_iris.csv
-      md5: 5d03a1564b3038fc35a842f8e4bde491
-      size: 7260
     - path: data/processed/train_iris.csv
       md5: ed8a7e5ba0a211251bdee6c498fe3eb4
       size: 5724
@@ -83,6 +82,8 @@ stages:
         base:
           random_state: 42
           log_level: INFO
+        data_split.trainset_path: data/processed/train_iris.csv
+        featurize.target_column: target
         train:
           cv: 3
           estimator_name: logreg
@@ -113,8 +114,8 @@ stages:
           model_path: models/model.joblib
     outs:
     - path: models/model.joblib
-      md5: dc872fae52841db605b062baba9bc272
-      size: 2949
+      md5: 02ba4225f8e53d62aaa41ffdf102ea34
+      size: 2669
   evaluate:
     cmd: python src/stages/evaluate.py --config=params.yaml
     deps:
@@ -122,17 +123,22 @@ stages:
       md5: b5e45593a772fc66629488e1806505c4
       size: 1492
     - path: models/model.joblib
-      md5: dc872fae52841db605b062baba9bc272
-      size: 2949
+      md5: 02ba4225f8e53d62aaa41ffdf102ea34
+      size: 2669
     - path: src/stages/evaluate.py
       md5: e845a44aa40bffa0b20b08a7d854e999
       size: 2358
     params:
       params.yaml:
+        base:
+          random_state: 42
+          log_level: INFO
+        data_split.testset_path: data/processed/test_iris.csv
         evaluate:
           reports_dir: reports
           metrics_file: metrics.json
           confusion_matrix_image: confusion_matrix.png
+        featurize.target_column: target
     outs:
     - path: reports/confusion_matrix.png
       md5: 64609d4d2fe8d2718531f253d881dde6
