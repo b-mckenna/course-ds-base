@@ -24,8 +24,8 @@ stages:
       md5: 4224576f0267bf88902f87f0f6200967
       size: 2757
     - path: src/stages/featurize.py
-      md5: fa1ec29f6ff564a3e3d305aea118be81
-      size: 1292
+      md5: 49a7389e50fe8cd99200204cf0ef74af
+      size: 1291
     params:
       params.yaml:
         base:
